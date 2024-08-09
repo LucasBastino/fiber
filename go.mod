@@ -1,4 +1,4 @@
-module fiber-gorm
+module github.com/LucasBastino/fiber
 
 go 1.22.0
 
