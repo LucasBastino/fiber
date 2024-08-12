@@ -3,6 +3,8 @@ package main
 import (
 	"log"
 
+	"github.com/LucasBastino/fiber/database"
+	"github.com/LucasBastino/fiber/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/html/v2"
@@ -15,11 +17,17 @@ func main() {
 		Views: html.New("./views", ".html"),
 	})
 
-	db = CreateConnection()
-	defer db.Close()
+	// Database connection
+	database.CreateConnection()
+
 	// Middlewares
 	app.Use(logger.New())
-	SetupRoutes(app)
+
+	// Serve static files
+	app.Static("/static", "./static")
+
+	// Routing
+	routes.SetupRoutes(app)
 
 	// Start
 	log.Fatal(app.Listen(":8085"))

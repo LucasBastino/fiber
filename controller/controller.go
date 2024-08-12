@@ -1,27 +1,29 @@
-package main
+package controller
 
 import (
 	"log"
 
+	"github.com/LucasBastino/fiber/database"
+	"github.com/LucasBastino/fiber/models"
 	"github.com/gofiber/fiber/v2"
 )
 
 // Handlers
 
-func renderIndex(c *fiber.Ctx) error {
+func RenderIndex(c *fiber.Ctx) error {
 	return c.Render("index", fiber.Map{
 		"Title": "titulo index",
-		"User":  User{"Lucas", "29"}})
+		"User":  models.User{"Lucas", "29"}})
 }
 
-func renderForm(c *fiber.Ctx) error {
-	return c.Render("form", fiber.Map{"user": User{"Lucas", "25"}})
+func RenderForm(c *fiber.Ctx) error {
+	return c.Render("form", fiber.Map{"user": models.User{"Lucas", "25"}})
 }
 
-func getUsers(c *fiber.Ctx) error {
-	var user User
-	var users []User
-	result, err := DB.Query("SELECT Name, DNI FROM MemberTable")
+func GetUsers(c *fiber.Ctx) error {
+	var user models.User
+	var users []models.User
+	result, err := database.DB.Query("SELECT Name, DNI FROM MemberTable")
 	if err != nil {
 		log.Println(err)
 	}
@@ -37,8 +39,8 @@ func getUsers(c *fiber.Ctx) error {
 
 }
 
-func createUser(c *fiber.Ctx) error {
-	user := User{}
+func CreateUser(c *fiber.Ctx) error {
+	user := models.User{}
 	if err := c.BodyParser(&user); err != nil {
 		return err
 	}
